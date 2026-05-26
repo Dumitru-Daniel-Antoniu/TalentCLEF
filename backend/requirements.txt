@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pdfplumber
+python-docx
+PyPDF2
+transformers
+torch
+scikit-learn
+numpy
+pandas
+spacy
+joblib

@@ -1,3 +1,17 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+uploads/
+.DS_Store
+/.env
 .kaggle
 Data/
 Results/
+sample_data/
+jobbert_backend.zip
+EDA/eda_figures/
+EDA/eda_dev_figures/
+backend/models/
