@@ -9,8 +9,8 @@ RESUMES: Dict[str, Dict] = {}
 JOBS: Dict[str, Dict] = {}
 
 
-def save_resume(rid: str, filename: str, text: str):
-    RESUMES[rid] = {"id": rid, "filename": filename, "text": text}
+def save_resume(rid: str, filename: str, text: str, job_id: Optional[str] = None):
+    RESUMES[rid] = {"id": rid, "filename": filename, "text": text, "job_id": job_id}
 
 
 def get_resume(rid: str) -> Optional[Dict]:
@@ -19,6 +19,10 @@ def get_resume(rid: str) -> Optional[Dict]:
 
 def list_resumes():
     return list(RESUMES.values())
+
+
+def list_resumes_for_job(job_id: str):
+    return [r for r in RESUMES.values() if r.get("job_id") == job_id]
 
 
 def save_job(jid: str, text: str, embedding):

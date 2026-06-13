@@ -9,7 +9,7 @@ export default function ResumeCard({ item }: { item: any }){
           <div className="text-sm text-slate-500">{item.summary}</div>
         </div>
         <div className="text-right">
-          <div className="text-lg font-bold">{item.score_pct}%</div>
+          <div className="text-lg font-bold text-emerald-600">{item.score_pct}%</div>
           <div className="text-xs text-slate-500">similarity</div>
         </div>
       </div>
@@ -17,7 +17,7 @@ export default function ResumeCard({ item }: { item: any }){
         <div className="text-xs text-slate-600">Top skills:</div>
         <div className="flex gap-2 mt-2 flex-wrap">
           {(item.skills || []).slice(0,6).map((s:string,i:number)=> (
-            <span key={i} className="px-2 py-1 bg-indigo-50 text-indigo-700 rounded text-xs">{s}</span>
+            <span key={i} className="px-2 py-1 bg-emerald-50 text-emerald-700 rounded text-xs">{s}</span>
           ))}
         </div>
       </div>

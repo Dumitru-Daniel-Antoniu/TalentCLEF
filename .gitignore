@@ -1,5 +1,6 @@
 venv/
 .venv/
+Data/
 __pycache__/
 *.pyc
 node_modules/
@@ -8,7 +9,6 @@ uploads/
 .DS_Store
 /.env
 .kaggle
-Data/
 Results/
 sample_data/
 jobbert_backend.zip

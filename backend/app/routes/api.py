@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
 from fastapi import status
 from typing import List, Optional
 from uuid import uuid4
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.post("/upload-resumes", response_model=List[UploadResponse])
-async def upload_resumes(files: List[UploadFile] = File(...)):
+async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[str] = Form(None)):
     """Accept multiple resume files (PDF/DOCX/TXT), extract text, and store temporarily."""
     upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
     upload_dir.mkdir(parents=True, exist_ok=True)
@@ -31,7 +31,7 @@ async def upload_resumes(files: List[UploadFile] = File(...)):
             dest.write_bytes(contents)
 
             text = parser.parse_resume(dest)
-            storage.save_resume(uid, f.filename, text)
+            storage.save_resume(uid, f.filename, text, job_id=job_id)
 
             skills = list(extract_skills(text))
             summary = summarize_text(text)
@@ -46,6 +46,53 @@ async def upload_resumes(files: List[UploadFile] = File(...)):
     return responses
 
 
+@router.get("/resumes")
+async def list_resumes(job_id: Optional[str] = None):
+    """List uploaded resumes; optionally filter by job_id."""
+    try:
+        if job_id:
+            return storage.list_resumes_for_job(job_id)
+        return storage.list_resumes()
+    except Exception as e:
+        logger.exception("Failed to list resumes: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/job-description-file")
+async def job_description_file(file: UploadFile = File(...)):
+    """Accept a job description file (PDF/DOCX/TXT), extract text, and store embedding."""
+    upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
+    upload_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        contents = await file.read()
+        uid = uuid4().hex
+        ext = Path(file.filename).suffix or ""
+        dest = upload_dir / f"{uid}{ext}"
+        dest.write_bytes(contents)
+
+        text = parser.parse_resume(dest)
+        text_clean = clean_text(text)
+        emb = get_embedding(text_clean)
+        job_id = uuid4().hex
+        storage.save_job(job_id, text_clean, emb)
+
+        skills = list(extract_skills(text_clean))
+        summary = summarize_text(text_clean)
+
+        return {
+            "job_id": job_id,
+            "dim": emb.shape[0],
+            "filename": file.filename,
+            "snippet": (text_clean[:400] + "...") if len(text_clean) > 400 else text_clean,
+            "skills": skills,
+            "summary": summary,
+        }
+    except Exception as e:
+        logger.exception("Failed to process job upload: %s", e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
 @router.post("/job-description")
 async def job_description(payload: JobCreate):
     """Accept a job description, preprocess and store its embedding."""
@@ -54,6 +101,36 @@ async def job_description(payload: JobCreate):
     job_id = uuid4().hex
     storage.save_job(job_id, text, emb)
     return {"job_id": job_id, "dim": emb.shape[0]}
+
+
+@router.get("/job/{job_id}")
+async def get_job(job_id: str):
+    """Return stored job description text for the given job_id."""
+    try:
+        job = storage.get_job(job_id)
+        if not job:
+            raise HTTPException(status_code=404, detail="Job not found")
+        return {"job_id": job_id, "text": job.get("text", "")}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Failed to fetch job: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/resume/{resume_id}")
+async def get_resume(resume_id: str):
+    """Return stored resume text for the given resume id."""
+    try:
+        r = storage.get_resume(resume_id)
+        if not r:
+            raise HTTPException(status_code=404, detail="Resume not found")
+        return {"id": r["id"], "filename": r.get("filename", ""), "text": r.get("text", "")}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Failed to fetch resume: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/rank")

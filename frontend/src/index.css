@@ -2,11 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root { height: 100%; }
-body { @apply bg-slate-50 text-slate-800; }
+html, body { height: 100%; margin: 0; }
+html { background-color: rgba(236, 253, 245, 0.86); }
+body { @apply text-slate-800; background-color: rgba(236, 253, 245, 0.86); }
+
+/* Don't globally hide scrollbars — control them via the app-shell and the no-scroll-lock on #root */
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: initial; height: initial; }
+
+/* App shell: full-viewport container which scrolls internally. Prevents outer overscroll and white gaps */
+.app-shell { height: 100vh; overflow-y: hidden; overscroll-behavior: none; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+/* Hide WebKit scrollbars by default */
+.app-shell::-webkit-scrollbar { width: 0; height: 0; }
+
+/* When content needs scrolling, add `.show-scrollbar` to reveal the scrollbar */
+.app-shell.show-scrollbar { overflow-y: auto; scrollbar-width: auto; -ms-overflow-style: auto; }
+.app-shell.show-scrollbar::-webkit-scrollbar { width: 12px; height: 12px; }
+
+/* Decorative page background (applies to main via .page-pattern) */
+.page-pattern { position: relative; overflow: visible; background-color: rgba(236, 253, 245, 0.86); min-height: 100%; }
+.page-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(900px 420px at 8% 12%, rgba(16,185,129,0.18), transparent 22%),
+    radial-gradient(700px 360px at 92% 82%, rgba(6,182,212,0.10), transparent 26%),
+    radial-gradient(1200px 600px at 50% 50%, rgba(16,185,129,0.04), transparent 45%);
+  filter: blur(30px);
+  pointer-events: none;
+  opacity: 1;
+}
+.page-pattern::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(ellipse at center, rgba(0,0,0,0.06), transparent 40%),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 28px);
+  background-blend-mode: overlay;
+  opacity: 0.95;
+  pointer-events: none;
+}
 
 /* Simple glassmorphism card */
 .glass-card {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,255,250,0.92));
+  border: 1px solid rgba(16,185,129,0.06);
+  backdrop-filter: blur(8px);
 }
