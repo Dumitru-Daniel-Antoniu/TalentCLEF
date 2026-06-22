@@ -13,6 +13,19 @@ export async function uploadResumes(files: File[], jobId?: string) {
   return res.data
 }
 
+export async function resetUploads(uploadType: 'jobs' | 'resumes') {
+  try {
+    const res = await api.delete(`/uploads/${uploadType}`)
+    return res.data
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      console.warn(`Upload reset endpoint is unavailable for ${uploadType}; continuing with client-side replacement.`)
+      return { cleared: false, upload_type: uploadType }
+    }
+    throw error
+  }
+}
+
 export async function postJobDescription(text: string) {
   const res = await api.post('/job-description', { text })
   return res.data

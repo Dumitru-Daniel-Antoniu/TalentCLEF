@@ -65,14 +65,62 @@ def _md5_of_file(p: Path) -> str:
     return h.hexdigest()
 
 
+def _is_valid_extraction(path: Path) -> bool:
+    if not path.is_dir():
+        return False
+    markers = ("model.pt", "pytorch_model.bin", "model.safetensors", "tf_model.h5")
+    return any(
+        (path / marker).exists() or next(path.rglob(marker), None) is not None
+        for marker in markers
+    )
+
+
+def _write_extraction_manifest(manifest_path: Path, archive_path: Path, destination: Path) -> None:
+    stat = archive_path.stat()
+    payload = {
+        "archive_size": stat.st_size,
+        "archive_mtime_ns": stat.st_mtime_ns,
+        "directory": destination.name,
+    }
+    manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+
+
 def _extract_archive(archive_path: Path, dest_root: Path) -> Path:
+    dest_root.mkdir(parents=True, exist_ok=True)
+    manifest_path = dest_root / ".jobbert_extraction.json"
+    archive_stat = archive_path.stat()
+
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        cached = dest_root / manifest["directory"]
+        if (
+            manifest.get("archive_size") == archive_stat.st_size
+            and manifest.get("archive_mtime_ns") == archive_stat.st_mtime_ns
+            and _is_valid_extraction(cached)
+        ):
+            logger.info("Reusing extracted model at %s", cached)
+            return cached
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        pass
+
+    # Older extractions predate the manifest. Reuse one only when it is newer
+    # than the archive and contains complete model artifacts.
+    existing = sorted(dest_root.glob("jobbert_*"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
+    for candidate in existing:
+        if candidate.stat().st_mtime_ns >= archive_stat.st_mtime_ns and _is_valid_extraction(candidate):
+            _write_extraction_manifest(manifest_path, archive_path, candidate)
+            logger.info("Reusing extracted model at %s", candidate)
+            return candidate
+
     md5 = _md5_of_file(archive_path)
     dest = dest_root / f"jobbert_{md5}"
-    if dest.exists():
+    if _is_valid_extraction(dest):
+        _write_extraction_manifest(manifest_path, archive_path, dest)
         return dest
     dest.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive_path, 'r') as z:
         z.extractall(dest)
+    _write_extraction_manifest(manifest_path, archive_path, dest)
     return dest
 
 
@@ -105,7 +153,7 @@ def _try_load_packaged_model() -> bool:
         logger.info("No packaged model archive found; will use default model")
         return False
 
-    logger.info("Found model archive at %s; extracting...", archive)
+    logger.info("Found model archive at %s; preparing model directory...", archive)
     models_dir = backend_root / "models"
     models_dir.mkdir(parents=True, exist_ok=True)
     try:

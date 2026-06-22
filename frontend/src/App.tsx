@@ -12,8 +12,22 @@ export default function App() {
 
     let touchStartY = 0
 
+    const getDocumentScroller = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return null
+      return target.closest('.document-scroll') as HTMLElement | null
+    }
+
+    const canScrollDocument = (scroller: HTMLElement, deltaY: number) => {
+      if (deltaY < 0) return scroller.scrollTop > 0
+      if (deltaY > 0) return scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 1
+      return false
+    }
+
     const onWheel = (e: WheelEvent) => {
       const deltaY = e.deltaY
+      const documentScroller = getDocumentScroller(e.target)
+      if (documentScroller && canScrollDocument(documentScroller, deltaY)) return
+
       const atTop = el.scrollTop <= 0
       const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1
       if ((atTop && deltaY < 0) || (atBottom && deltaY > 0)) {
@@ -28,6 +42,9 @@ export default function App() {
     const onTouchMove = (ev: TouchEvent) => {
       const currentY = ev.touches[0]?.clientY || 0
       const dy = touchStartY - currentY
+      const documentScroller = getDocumentScroller(ev.target)
+      if (documentScroller && canScrollDocument(documentScroller, dy)) return
+
       const atTop = el.scrollTop <= 0
       const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1
       if ((atTop && dy < 0) || (atBottom && dy > 0)) {
@@ -138,9 +155,9 @@ export default function App() {
   }, [])
 
   return (
-    <div ref={shellRef} className="h-screen app-shell" style={{ overflowY: 'hidden' }}>
+    <div ref={shellRef} className="h-screen app-shell talent-app" style={{ overflowY: 'hidden' }}>
       <Navbar onNavigate={() => {}} />
-      <main className="p-6 page-pattern">
+      <main className="page-pattern px-4 pb-8 pt-5 sm:px-6 lg:px-8">
         <Dashboard />
       </main>
     </div>

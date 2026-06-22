@@ -25,9 +25,17 @@ def list_resumes_for_job(job_id: str):
     return [r for r in RESUMES.values() if r.get("job_id") == job_id]
 
 
+def clear_resumes():
+    RESUMES.clear()
+
+
 def save_job(jid: str, text: str, embedding):
     JOBS[jid] = {"id": jid, "text": text, "embedding": embedding}
 
 
 def get_job(jid: str):
     return JOBS.get(jid)
+
+
+def clear_jobs():
+    JOBS.clear()

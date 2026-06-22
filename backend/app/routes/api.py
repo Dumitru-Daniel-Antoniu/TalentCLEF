@@ -15,6 +15,18 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
+@router.delete("/uploads/{upload_type}")
+async def clear_uploads(upload_type: str):
+    """Clear the previous upload batch for one document type."""
+    if upload_type == "resumes":
+        storage.clear_resumes()
+    elif upload_type == "jobs":
+        storage.clear_jobs()
+    else:
+        raise HTTPException(status_code=400, detail="Upload type must be 'jobs' or 'resumes'")
+    return {"cleared": upload_type}
+
+
 @router.post("/upload-resumes", response_model=List[UploadResponse])
 async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[str] = Form(None)):
     """Accept multiple resume files (PDF/DOCX/TXT), extract text, and store temporarily."""

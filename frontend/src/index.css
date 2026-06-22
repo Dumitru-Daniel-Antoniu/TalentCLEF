@@ -2,53 +2,144 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  font-family: Inter, Aptos, "Segoe UI", sans-serif;
+  color: #173b38;
+  background: #f3f1e8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
-html { background-color: rgba(236, 253, 245, 0.86); }
-body { @apply text-slate-800; background-color: rgba(236, 253, 245, 0.86); }
+html { background-color: #f3f1e8; }
+body { background-color: #f3f1e8; color: #173b38; }
+button, input { font: inherit; }
+::selection { background: #c8ff69; color: #102d2b; }
 
-/* Don't globally hide scrollbars — control them via the app-shell and the no-scroll-lock on #root */
-html::-webkit-scrollbar, body::-webkit-scrollbar { width: initial; height: initial; }
+.font-display { font-family: Georgia, "Times New Roman", serif; }
 
-/* App shell: full-viewport container which scrolls internally. Prevents outer overscroll and white gaps */
-.app-shell { height: 100vh; overflow-y: hidden; overscroll-behavior: none; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
-/* Hide WebKit scrollbars by default */
+.talent-app {
+  background:
+    radial-gradient(circle at 8% 10%, rgba(200, 255, 105, 0.16), transparent 23rem),
+    radial-gradient(circle at 92% 74%, rgba(255, 128, 102, 0.1), transparent 26rem),
+    #f3f1e8;
+}
+
+.app-navbar {
+  position: relative;
+  z-index: 20;
+  height: 68px;
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+  background: #102d2b;
+  box-shadow: 0 8px 32px rgba(16,45,43,0.16);
+}
+
+.brand-orbit {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 999px;
+  color: #102d2b;
+  background: #c8ff69;
+  box-shadow: 0 0 0 5px rgba(200,255,105,0.1);
+}
+
+.app-shell {
+  height: 100vh;
+  overflow-y: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 .app-shell::-webkit-scrollbar { width: 0; height: 0; }
+.app-shell.show-scrollbar { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(16,45,43,0.28) transparent; }
+.app-shell.show-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+.app-shell.show-scrollbar::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(16,45,43,0.25); }
 
-/* When content needs scrolling, add `.show-scrollbar` to reveal the scrollbar */
-.app-shell.show-scrollbar { overflow-y: auto; scrollbar-width: auto; -ms-overflow-style: auto; }
-.app-shell.show-scrollbar::-webkit-scrollbar { width: 12px; height: 12px; }
-
-/* Decorative page background (applies to main via .page-pattern) */
-.page-pattern { position: relative; overflow: visible; background-color: rgba(236, 253, 245, 0.86); min-height: 100%; }
+.page-pattern {
+  position: relative;
+  min-height: calc(100% - 68px);
+  overflow: visible;
+  isolation: isolate;
+}
 .page-pattern::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -3;
-  background:
-    radial-gradient(900px 420px at 8% 12%, rgba(16,185,129,0.18), transparent 22%),
-    radial-gradient(700px 360px at 92% 82%, rgba(6,182,212,0.10), transparent 26%),
-    radial-gradient(1200px 600px at 50% 50%, rgba(16,185,129,0.04), transparent 45%);
-  filter: blur(30px);
-  pointer-events: none;
-  opacity: 1;
-}
-.page-pattern::after {
-  content: '';
-  position: absolute;
-  inset: 0;
   z-index: -2;
-  background-image:
-    radial-gradient(ellipse at center, rgba(0,0,0,0.06), transparent 40%),
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 28px);
-  background-blend-mode: overlay;
-  opacity: 0.95;
   pointer-events: none;
+  opacity: 0.25;
+  background-image: radial-gradient(rgba(16,45,43,0.24) 0.7px, transparent 0.7px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, #000, transparent 70%);
 }
 
-/* Simple glassmorphism card */
-.glass-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,255,250,0.92));
-  border: 1px solid rgba(16,185,129,0.06);
-  backdrop-filter: blur(8px);
+.surface-card {
+  border: 1px solid rgba(16,45,43,0.11);
+  background: rgba(255,255,252,0.92);
+  box-shadow: 0 16px 46px rgba(16,45,43,0.07);
+  backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.upload-surface {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(16,45,43,0.12);
+  border-radius: 22px;
+  background: rgba(255,255,252,0.92);
+  box-shadow: 0 14px 40px rgba(16,45,43,0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.upload-surface::after {
+  content: '';
+  position: absolute;
+  top: -28px;
+  right: -28px;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  border: 1px solid rgba(16,45,43,0.08);
+  pointer-events: none;
+}
+.upload-surface:hover { transform: translateY(-2px); border-color: rgba(16,45,43,0.22); box-shadow: 0 18px 48px rgba(16,45,43,0.11); }
+.upload-surface.is-dragging { border-color: #80dfbd; background: rgba(200,255,105,0.13); transform: translateY(-2px); }
+
+.document-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: "Cascadia Code", Consolas, monospace;
+  line-height: 1.75;
+}
+
+.document-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 223, 189, 0.8) rgba(255,255,255,0.08);
+  overscroll-behavior: auto;
+}
+.document-scroll::-webkit-scrollbar { width: 9px; }
+.document-scroll::-webkit-scrollbar-track { border-radius: 999px; background: rgba(255,255,255,0.08); }
+.document-scroll::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 999px; background: rgba(128,223,189,0.8); background-clip: padding-box; }
+
+.result-card { transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+.result-card:hover { transform: translateY(-2px); border-color: rgba(16,45,43,0.2); box-shadow: 0 18px 48px rgba(16,45,43,0.1); }
+
+@keyframes pulse-scan {
+  0% { transform: scale(0.75); opacity: 0.7; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+.scan-pulse { animation: pulse-scan 1.5s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
