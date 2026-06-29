@@ -41,13 +41,13 @@ export default function Dashboard(){
       const rankingsPerJob: any[] = []
 
       if (jobUploads && jobUploads.length > 0) {
-        // rank for each uploaded job description
+
         for (const j of jobUploads) {
           const resp = await rankCandidates({ job_id: j.job_id, resume_ids: ids, top_k: 100 })
           rankingsPerJob.push({ job_id: j.job_id, filename: j.filename || 'Job', rankings: resp.rankings || [] })
         }
       } else {
-        // single job: either existing jobId or raw text
+
         let job
         if (jobId) {
           job = { job_id: jobId }
@@ -72,19 +72,19 @@ export default function Dashboard(){
   const handleJobUploaded = async (jobs: any[]) => {
     const job = jobs[jobs.length - 1]
     if (!job) return
-    // server returns job_id and snippet
+
     setJobId(job.job_id)
-    // replace the previous job batch with the latest selection
+
     setJobUploads(jobs)
     setJobRankings([])
-    // fetch full stored job text so we can render the complete content
+
     try {
       const full = await getJob(job.job_id)
       if (full && full.text) {
         setJobText(full.text)
       }
     } catch (e) {
-      // fallback to snippet if full fetch fails
+
       if (job.snippet) setJobText(job.snippet)
     }
   }

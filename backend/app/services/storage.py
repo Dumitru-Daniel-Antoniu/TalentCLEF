@@ -1,8 +1,8 @@
-"""Simple in-memory storage for demo purposes.
 
-In-memory dictionaries keep uploaded resumes and job descriptions. This is
-intentionally simple for the demo; swap for a DB or persistent store in prod.
-"""
+
+
+
+
 from typing import Dict, Optional
 
 RESUMES: Dict[str, Dict] = {}

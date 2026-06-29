@@ -1,15 +1,15 @@
-"""Embedding utilities.
 
-Minimal loader that prefers a packaged trained model (jobbert_backend.zip).
-It uses HuggingFace `transformers` + `torch` to load models from the
-extracted directory. If a packaged model is not found, it falls back to the
-public HF model `sentence-transformers/all-MiniLM-L6-v2` via `transformers`.
 
-We intentionally avoid adding `sentence-transformers` as a hard dependency
-for the backend; if it happens to be available in the environment the code
-will try to use it for packaged models marked as SentenceTransformer, but
-the primary loading path is HF+torch.
-"""
+
+
+
+
+
+
+
+
+
+
 from typing import List, Optional
 import os
 import threading
@@ -27,16 +27,16 @@ _MODEL = None
 _MODEL_TYPE: Optional[str] = None
 _LOCK = threading.Lock()
 
-# Default public model (loaded via transformers + torch)
+
 DEFAULT_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
 
 def _load_tokenizer_with_fix(name_or_path: str, local: bool = True):
-    """Load a tokenizer trying `fix_mistral_regex=True` when available.
 
-    Falls back to calling without the flag if the transformers version
-    doesn't accept the parameter, and returns None on failure.
-    """
+
+
+
+
     try:
         from transformers import AutoTokenizer
     except Exception:
@@ -103,8 +103,8 @@ def _extract_archive(archive_path: Path, dest_root: Path) -> Path:
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         pass
 
-    # Older extractions predate the manifest. Reuse one only when it is newer
-    # than the archive and contains complete model artifacts.
+
+
     existing = sorted(dest_root.glob("jobbert_*"), key=lambda path: path.stat().st_mtime_ns, reverse=True)
     for candidate in existing:
         if candidate.stat().st_mtime_ns >= archive_stat.st_mtime_ns and _is_valid_extraction(candidate):
@@ -125,10 +125,10 @@ def _extract_archive(archive_path: Path, dest_root: Path) -> Path:
 
 
 def _try_load_packaged_model() -> bool:
-    """Look for a packaged model archive and attempt to load it.
 
-    Returns True on success and sets the module-level _MODEL/_MODEL_TYPE.
-    """
+
+
+
     global _MODEL, _MODEL_TYPE
     backend_root = Path(__file__).resolve().parents[2]
     workspace_root = backend_root.parents[0]
@@ -162,18 +162,18 @@ def _try_load_packaged_model() -> bool:
         logger.exception("Failed to extract archive: %s", e)
         return False
 
-    # Look for candidate subdirectories that contain HF model artifacts
+
     def _find_candidate_dirs(root: Path):
         candidates = []
-        # Common HF artifact filenames
+
         hf_markers = ["config.json", "pytorch_model.bin", "model.safetensors", "tf_model.h5"]
         for marker in hf_markers:
             for p in root.rglob(marker):
                 if p and p.parent:
                     candidates.append(p.parent)
-        # Also consider the extracted root itself
+
         candidates.insert(0, root)
-        # Deduplicate while preserving order
+
         seen = set()
         out = []
         for c in candidates:
@@ -188,9 +188,9 @@ def _try_load_packaged_model() -> bool:
 
     candidate_dirs = _find_candidate_dirs(extracted)
 
-    # Preferred: load with HuggingFace transformers + torch from a candidate folder
+
     for candidate in candidate_dirs:
-        # If the package contains a PyTorch state dict `model.pt`, try loading it
+
         model_pt = Path(candidate) / "model.pt"
         cfg_json = Path(candidate) / "config.json"
         if model_pt.exists():
@@ -204,7 +204,7 @@ def _try_load_packaged_model() -> bool:
                 if not isinstance(state, dict):
                     raise RuntimeError('model.pt is not a state_dict')
 
-                # Derive shape-based config values from the checkpoint
+
                 def _get_shape(key):
                     v = state.get(key)
                     return v.shape if v is not None else None
@@ -214,11 +214,11 @@ def _try_load_packaged_model() -> bool:
                 type_shape = _get_shape('encoder.embeddings.token_type_embeddings.weight')
                 hidden_size = vocab_shape[1] if vocab_shape is not None else None
 
-                # infer intermediate size and number of layers
+
                 inter_shape = _get_shape('encoder.encoder.layer.0.intermediate.dense.weight')
                 intermediate_size = inter_shape[0] if inter_shape is not None else None
 
-                # count layers
+
                 max_layer = -1
                 for k in state.keys():
                     if k.startswith('encoder.encoder.layer.'):
@@ -231,7 +231,7 @@ def _try_load_packaged_model() -> bool:
                             pass
                 num_layers = max_layer + 1 if max_layer >= 0 else None
 
-                # choose attention heads that divide hidden_size
+
                 def _choose_heads(hs):
                     for h in (32, 16, 12, 8, 6, 4, 2, 1):
                         if hs % h == 0:
@@ -243,7 +243,7 @@ def _try_load_packaged_model() -> bool:
 
                 num_attention_heads = _choose_heads(hidden_size)
 
-                # Build a BertConfig matching shapes
+
                 cfg = BertConfig(
                     vocab_size=vocab_shape[0] if vocab_shape is not None else 30522,
                     hidden_size=hidden_size,
@@ -254,10 +254,10 @@ def _try_load_packaged_model() -> bool:
                     type_vocab_size=type_shape[0] if type_shape is not None else 2,
                 )
 
-                # Instantiate a fresh model and load mapped state dict
+
                 model = BertModel(cfg)
 
-                # Try to load tokenizer from packaged folder, else fallback to base_name
+
                 base_name = None
                 if cfg_json.exists():
                     try:
@@ -267,7 +267,7 @@ def _try_load_packaged_model() -> bool:
                     except Exception:
                         base_name = None
 
-                # Try to load tokenizer from packaged folder using the safe loader
+
                 tokenizer = _load_tokenizer_with_fix(str(candidate), local=True)
                 if tokenizer is None:
                     if base_name:
@@ -277,7 +277,7 @@ def _try_load_packaged_model() -> bool:
                     if tokenizer is None:
                         raise RuntimeError("Unable to load tokenizer for packaged model")
 
-                # Remap keys by stripping leading 'encoder.' prefix
+
                 new_state = {}
                 for k, v in state.items():
                     new_k = k
@@ -305,10 +305,10 @@ def _try_load_packaged_model() -> bool:
             import torch
 
             logger.info("Attempting to load packaged model with HuggingFace from %s", candidate)
-            # load tokenizer using safe helper to apply `fix_mistral_regex` when available
+
             tokenizer = _load_tokenizer_with_fix(str(candidate), local=True)
             if tokenizer is None:
-                # fallback to default tokenizer if packaged tokenizer is problematic
+
                 tokenizer = _load_tokenizer_with_fix(DEFAULT_MODEL_NAME, local=False)
             model = AutoModel.from_pretrained(str(candidate), local_files_only=True)
             model.eval()
@@ -321,7 +321,7 @@ def _try_load_packaged_model() -> bool:
         except Exception as e:
             logger.exception("HuggingFace load failed for candidate %s: %s", candidate, e)
 
-    # Optional: if sentence-transformers is present, try that next
+
     try:
         from sentence_transformers import SentenceTransformer
 
@@ -338,7 +338,7 @@ def _try_load_packaged_model() -> bool:
 
 
 def _ensure_model():
-    """Ensure _MODEL is loaded; prefer packaged model, else load default via HF."""
+
     global _MODEL, _MODEL_TYPE
     if _MODEL is not None:
         return
@@ -349,7 +349,7 @@ def _ensure_model():
         if ok:
             return
 
-        # Fallback: load default model via transformers + torch
+
         try:
             from transformers import AutoModel, AutoTokenizer
             import torch
@@ -376,7 +376,7 @@ def mean_pooling_hf(last_hidden_state, attention_mask):
 
 
 def get_embedding(text: str) -> np.ndarray:
-    """Return a single numpy embedding for the provided text."""
+
     _ensure_model()
     if _MODEL_TYPE == "sentence_transformer":
         emb = _MODEL.encode(text, convert_to_numpy=True, show_progress_bar=False)
@@ -392,7 +392,7 @@ def get_embedding(text: str) -> np.ndarray:
         inputs = {k: v.to(device) for k, v in inputs.items()}
         with torch.no_grad():
             out = model(**inputs)
-        emb = mean_pooling_hf(out.last_hidden_state, inputs["attention_mask"])  # (1, D)
+        emb = mean_pooling_hf(out.last_hidden_state, inputs["attention_mask"])
         emb = emb.cpu().numpy()[0]
         emb = emb / (np.linalg.norm(emb) + 1e-12)
         return emb
@@ -401,10 +401,10 @@ def get_embedding(text: str) -> np.ndarray:
 
 
 def embed_texts(texts: List[str]) -> np.ndarray:
-    """Return embeddings for a list of texts as a numpy array.
 
-    Uses HF batching when available.
-    """
+
+
+
     _ensure_model()
     if _MODEL_TYPE == "sentence_transformer":
         embs = _MODEL.encode(texts, convert_to_numpy=True, show_progress_bar=False)
@@ -423,7 +423,7 @@ def embed_texts(texts: List[str]) -> np.ndarray:
             inputs = {k: v.to(device) for k, v in inputs.items()}
             with torch.no_grad():
                 out = model(**inputs)
-            embs = mean_pooling_hf(out.last_hidden_state, inputs["attention_mask"])  # (B, D)
+            embs = mean_pooling_hf(out.last_hidden_state, inputs["attention_mask"])
             embs = embs.cpu().numpy()
             norms = np.linalg.norm(embs, axis=1, keepdims=True) + 1e-12
             embs = embs / norms
@@ -434,18 +434,18 @@ def embed_texts(texts: List[str]) -> np.ndarray:
 
 
 def get_model_info() -> dict:
-    """Return basic model information: whether loaded, model type, and embedding dim (if available)."""
+
     _ensure_model()
     info = {"loaded": _MODEL is not None, "model_type": _MODEL_TYPE}
     if not _MODEL:
         return info
 
-    # Try to infer embedding dimension by computing a single embedding
+
     try:
         emb = get_embedding("test")
         info["dim"] = int(len(emb))
     except Exception:
-        # Best-effort: try to read from model config
+
         try:
             if _MODEL_TYPE == "hf" and isinstance(_MODEL, dict):
                 m = _MODEL.get("model")

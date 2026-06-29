@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
-"""Simple smoke test that imports the backend embeddings loader
-and computes a single embedding to verify model availability.
-"""
+
+
+
+
 import logging
 import sys
 
@@ -13,7 +13,7 @@ try:
     import sys
     import numpy as np
 
-    # Ensure the `backend` directory is on sys.path so `app` can be imported
+
     sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
     from app.ml import embeddings

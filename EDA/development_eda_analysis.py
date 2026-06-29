@@ -40,7 +40,7 @@ MALE_ASSOCIATED_NAMES = {
 
 
 def find_development_root(extract_dir: Path) -> Path:
-    """Find the directory that directly contains the English and Spanish folders."""
+
     candidates = [extract_dir] + [p for p in extract_dir.rglob("*") if p.is_dir()]
     for candidate in candidates:
         if (
@@ -55,7 +55,7 @@ def find_development_root(extract_dir: Path) -> Path:
 
 
 def clean_job_title(text: str) -> str:
-    """Use the first non-empty line as the title."""
+
     first_line = next(
         (line.strip() for line in text.splitlines() if line.strip()),
         "Unknown job",
@@ -105,7 +105,7 @@ def normalize_heading(line: str) -> str:
 
 
 def extract_section(text: str, possible_starts: set[str]) -> str:
-    """Extract text between a selected heading and the following known heading."""
+
     lines = text.splitlines()
     start_index = None
 
@@ -180,13 +180,13 @@ def count_professional_positions(text: str) -> int:
 
 
 def binary_name_category(full_name: str) -> str:
-    """
-    Assign one of two name-associated categories.
 
-    The classification is based on the first name and is intended only
-    for an aggregate descriptive graphic. It must not be interpreted as
-    verified or self-identified gender.
-    """
+
+
+
+
+
+
     first_name = re.split(r"[\s-]+", full_name.strip())[0]
 
     if first_name in FEMALE_ASSOCIATED_NAMES:
@@ -217,7 +217,7 @@ def main() -> None:
     en_root = root / "en"
     OUTPUT_DIR.mkdir(exist_ok=True)
 
-    # The qrels TSV is the source of the relevance relationships.
+
     qrels = pd.read_csv(
         en_root / "qrels.tsv",
         sep="\t",

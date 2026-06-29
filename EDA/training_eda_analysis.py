@@ -49,7 +49,7 @@ def normalize_heading(line: str) -> str:
 
 
 def extract_section(text: str, possible_starts: set[str]) -> str:
-    """Extract a section until the following known heading."""
+
     lines = str(text).splitlines()
     start_index = None
 
@@ -145,9 +145,9 @@ def main() -> None:
             f"{sorted(missing_columns)}"
         )
 
-    # ---------------------------------------------------------------
-    # Figure 1: ten most represented job roles
-    # ---------------------------------------------------------------
+
+
+
     top_jobs = data["Job Roles"].value_counts().head(10).sort_values()
 
     plt.figure(figsize=(10, 6))
@@ -170,9 +170,9 @@ def main() -> None:
     plt.savefig(jobs_figure, dpi=300, bbox_inches="tight")
     plt.close()
 
-    # ---------------------------------------------------------------
-    # Figure 2: gender distribution from the explicit Gender column
-    # ---------------------------------------------------------------
+
+
+
     gender_counts = (
         data["Gender"]
         .value_counts()
@@ -200,9 +200,9 @@ def main() -> None:
     plt.savefig(gender_figure, dpi=300, bbox_inches="tight")
     plt.close()
 
-    # ---------------------------------------------------------------
-    # Additional descriptive values printed by the script
-    # ---------------------------------------------------------------
+
+
+
     education = data["Resume"].map(highest_education_level)
     positions = data["Resume"].map(count_professional_positions)
 

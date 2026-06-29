@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @router.delete("/uploads/{upload_type}")
 async def clear_uploads(upload_type: str):
-    """Clear the previous upload batch for one document type."""
+
     if upload_type == "resumes":
         storage.clear_resumes()
     elif upload_type == "jobs":
@@ -29,7 +29,7 @@ async def clear_uploads(upload_type: str):
 
 @router.post("/upload-resumes", response_model=List[UploadResponse])
 async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[str] = Form(None)):
-    """Accept multiple resume files (PDF/DOCX/TXT), extract text, and store temporarily."""
+
     upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
     upload_dir.mkdir(parents=True, exist_ok=True)
 
@@ -60,7 +60,7 @@ async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[s
 
 @router.get("/resumes")
 async def list_resumes(job_id: Optional[str] = None):
-    """List uploaded resumes; optionally filter by job_id."""
+
     try:
         if job_id:
             return storage.list_resumes_for_job(job_id)
@@ -72,7 +72,7 @@ async def list_resumes(job_id: Optional[str] = None):
 
 @router.post("/job-description-file")
 async def job_description_file(file: UploadFile = File(...)):
-    """Accept a job description file (PDF/DOCX/TXT), extract text, and store embedding."""
+
     upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
     upload_dir.mkdir(parents=True, exist_ok=True)
 
@@ -107,7 +107,7 @@ async def job_description_file(file: UploadFile = File(...)):
 
 @router.post("/job-description")
 async def job_description(payload: JobCreate):
-    """Accept a job description, preprocess and store its embedding."""
+
     text = clean_text(payload.text)
     emb = get_embedding(text)
     job_id = uuid4().hex
@@ -117,7 +117,7 @@ async def job_description(payload: JobCreate):
 
 @router.get("/job/{job_id}")
 async def get_job(job_id: str):
-    """Return stored job description text for the given job_id."""
+
     try:
         job = storage.get_job(job_id)
         if not job:
@@ -132,7 +132,7 @@ async def get_job(job_id: str):
 
 @router.get("/resume/{resume_id}")
 async def get_resume(resume_id: str):
-    """Return stored resume text for the given resume id."""
+
     try:
         r = storage.get_resume(resume_id)
         if not r:
@@ -147,8 +147,8 @@ async def get_resume(resume_id: str):
 
 @router.post("/rank")
 async def rank(payload: RankRequest):
-    """Compare job (by id or raw text) with stored resumes and return ranked candidates."""
-    # Get job embedding
+
+
     if payload.job_text:
         job_text = clean_text(payload.job_text)
         job_emb = get_embedding(job_text)
@@ -160,7 +160,7 @@ async def rank(payload: RankRequest):
     else:
         raise HTTPException(status_code=400, detail="Provide job_text or job_id")
 
-    # Select resumes
+
     resumes = []
     if payload.resume_ids:
         for rid in payload.resume_ids:
@@ -177,14 +177,14 @@ async def rank(payload: RankRequest):
     names = [r["filename"] for r in resumes]
     ids = [r["id"] for r in resumes]
 
-    # Compute embeddings for resumes
+
     try:
         embs = embed_texts(texts)
     except Exception as e:
         logger.exception("Embedding error: %s", e)
         raise HTTPException(status_code=500, detail=str(e))
 
-    # Cosine similarity
+
     try:
         import numpy as np
         from sklearn.metrics.pairwise import cosine_similarity
@@ -209,7 +209,7 @@ async def rank(payload: RankRequest):
             "summary": summary,
         })
 
-    # Sort by score desc
+
     results = sorted(results, key=lambda r: r["score"], reverse=True)
 
     top_k = payload.top_k or len(results)
@@ -219,7 +219,7 @@ async def rank(payload: RankRequest):
 
 @router.get("/model")
 async def model_status():
-    """Return model loader status and basic info."""
+
     try:
         info = get_model_info()
         return info

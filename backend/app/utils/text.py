@@ -11,11 +11,11 @@ def clean_text(text: str) -> str:
 
 
 def extract_skills(text: str):
-    """Attempt to extract short skill tokens from a resume-like text.
 
-    This is a heuristic extractor adapted from the provided notebook: it looks
-    for typical skill headings and splits on bullets, commas and newlines.
-    """
+
+
+
+
     if not text:
         return set()
 
@@ -28,7 +28,7 @@ def extract_skills(text: str):
     if m:
         block = m.group(1)
     else:
-        # fallback: look for short lines that look like skills
+
         lines = text.splitlines()
         for i, line in enumerate(lines):
             if re.search(r"(?i)^\s*(skills|required skills|habilidades|competencias)\b", line):
@@ -36,7 +36,7 @@ def extract_skills(text: str):
                 break
 
     if not block:
-        # simple fallback: top frequent short tokens
+
         tokens = set()
         for token in re.split(r"[\n,•\-\t]+", text[:2000]):
             s = token.strip().lower()

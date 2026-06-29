@@ -5,10 +5,10 @@ logger = logging.getLogger(__name__)
 
 
 def parse_resume(path: Path) -> str:
-    """Extract text from PDF, DOCX or TXT resume file.
 
-    Returns an empty string on failure.
-    """
+
+
+
     try:
         ext = path.suffix.lower()
         if ext == ".pdf":
@@ -20,7 +20,7 @@ def parse_resume(path: Path) -> str:
                     text = "\n".join(pages)
                     return text.strip()
             except Exception:
-                # fallback to PyPDF2
+
                 try:
                     import PyPDF2
 
@@ -44,7 +44,7 @@ def parse_resume(path: Path) -> str:
                 return ""
 
         else:
-            # treat as plain text
+
             try:
                 return path.read_text(encoding="utf-8", errors="ignore").strip()
             except Exception:
