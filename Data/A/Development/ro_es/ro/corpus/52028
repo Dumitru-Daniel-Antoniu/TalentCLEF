@@ -1,0 +1,59 @@
+Marcus Chen
+marcus.chen.2026@gmail.com | (415) 782-3641 | 847 Riverside Drive, Berkeley, CA 94702 | github.com/mchen-ee
+
+EDUCAȚIE
+
+Licență în inginerie electrică
+Universitatea din California, Berkeley, Berkeley, CA
+Absolvirea Așteptată: Mai 2026
+GPA: 3,7/4,0
+Cursuri Relevante: Proiectarea sistemelor digitale, Sisteme Embebidoe, Analiză Circuit, Aplicații Microcontrolere, Design VLSI, Arhitectură Calculatoare
+
+EXPERIENȚA LABORALĂ
+
+Inginer de produs - Stagiar
+TechVision Electronics, San Jose, CA
+Iunie 2024 - Prezent
+
+• Proiectarea și verificarea plăcilor de circuit imprimate pentru produsele electronice de consum care pot fi utilizate pentru IoT, utilizând instrumente de proiectare asistate de calculator pentru a optimiza instalarea componentelor și rularea în vederea fabricării
+• Dezvoltarea și punerea în aplicare a planurilor cuprinzătoare de testare a proiectării utilizând SystemVerilog și Universal Verification Methodology, realizând 95% acoperire funcțională în prototipuri FPGA
+• Colaborare cu echipamente multifuncționale pentru identificarea și rezolvarea blocajelor în ciclurile de dezvoltare a produselor, reducerea timpului de comercializare cu 15% prin îmbunătățirea proceselor
+• Punerea în aplicare a unor cadre de testare a defecțiunilor pentru a valida robustețea firmware-ului și rezistența hardware-ului în condiții negative
+• Documentație privind specificațiile de proiectare, procedurile de testare și rapoartele tehnice pentru sprijinirea tranziției de fabricație și a proceselor de asigurare a calității
+
+Inginer de inginerie Hardware
+Quantum Innovations Lab, Palo Alto, CA
+Mai 2023 - august 2023
+
+• Asistență pentru dezvoltarea prototipurilor de sisteme înfundate folosind Arduino și microcontrolere personalizate pentru demonstrații de testare a conceptului
+• Analiza de închidere a temporizării în modele FPGA folosind instrumente Xilinx, soluționând încălcări ale rutei critice pentru a îndeplini cerințele privind ceasul de 100 MHz
+• Conducere de asamblare electronică și testare a plăcilor prototip, rezolvarea problemelor hardware și punerea în aplicare a modificărilor de proiectare
+• Utilizarea ModelSim pentru simularea VHDL și verificarea proiectelor de logică digitală, identificarea și documentarea erorilor prin procese sistematice de monitorizare
+• Sprijin pentru eforturile de analiză a datelor de evaluare a performanței produselor și raportare a deciziilor de optimizare a proiectării
+
+APLICABILITĂȚI TEHNICE
+
+Design Hardware: Proiectarea plăcilor de circuite imprimate, Dezvoltare FPGA, Microcontrolere, Arduino, Garnitură Electronică, Închidere Temporizare
+HDL și verificare: SystemVerilog, VHDL, Universal Verification Methodology, Verificarea Designului, ModelSim, Injecție cu Fallas
+Unelte și platforme: Xilinx, Instrumente de design Asistat de către Computer, Sisteme de monitorizare a erorilor
+Programare: Python, Dezvoltare Firmware
+Protocoale și Interfețe: Comunicarea serială Asincron, Internetul Lucrurilor
+Practici de inginerie: Inginerie de proiectare, Design de produse, Teste, Analiză de date, Inginerie de Sisteme Bazat pe Modele
+
+PROIECTE
+
+Sistemul de automatizare a domiciliului inteligent
+• Proiectarea și punerea în aplicare a unui sistem de automatizare a gospodăriei bazat pe IOT folosind microcontrolere Arduino și design de PCB personalizate
+• Dezvoltarea software-ului de control bazat pe Python cu comunicare în serie asimcronă pentru coordonarea dispozitivelor
+• Integrarea mai multor senzori și acționari pentru a crea un prototip funcțional care demonstrează capacități de monitorizare la distanță
+
+Procesor de semnale digitale bazat pe FPGA
+• Implementarea unui filtru digital personalizat în FPGA Xilinx folosind VHDL, realizând procesarea în timp real a semnalelor audio
+• Realizarea verificării integrale utilizând băncile de testare SystemVerilog și realizarea închiderii temporizării la 125 MHz
+• Documentație privind fluxul complet de proiectare de la specificație la sinteză și validare hardware
+
+ACTIVITĂȚI ȘI CERTIFICĂRI
+
+Membru, Rama Student de la Institute of Electrical and Electronics Engineers (Ieșiri)
+Participant, Hardware Hackathon 2024 - Echipa Finalistă
+Certificat: Introducere în proiectarea sistemelor Embebidos (Curs online)

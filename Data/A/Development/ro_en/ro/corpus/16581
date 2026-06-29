@@ -1,0 +1,59 @@
+Marcus Chen
+marcus.chen.2026@gmail.com | (415) 782-3641 | 847 Riverside Drive, Berkeley, CA 94702 | github.com/mchen-ee
+
+EDUCAȚIE
+
+Burlac de Știință în Inginerie Electrică
+Universitatea din California, Berkeley, Berkeley, CA
+Absolvire anticipată: 2026 mai
+GPA: 3.7/4.0
+Cursuri relevante: Proiectare sisteme digitale, Sisteme integrate, Analiza circuitelor, Aplicatii Microcontroler, Proiectare VLSI, Arhitectura Computer
+
+EXPERIENȚA DE LUCRU
+
+Inginer de produse - intern
+TechVision Electronics, San Jose, CA
+iunie 2024 - prezent
+
+• Proiectarea și verificarea plăcilor de circuite imprimate pentru produsele electronice de consum enabled IoT, folosind instrumente de proiectare asistate de calculator pentru optimizarea plasării componentelor și a rutei pentru manevrabilitate
+• Elaborarea și executarea unor planuri cuprinzătoare de verificare a proiectării utilizând metodologia SystemVerilog și universal de verificare, realizând o acoperire funcțională de 95% pe prototipurile FPGA
+• Colaborarea cu echipe multifuncționale pentru identificarea și soluționarea blocajelor din ciclurile de dezvoltare a produselor, reducând timpul până la piață cu 15% prin îmbunătățirea procesului
+• Punerea în aplicare a cadrelor de testare a injecției cu defect pentru a valida robustețea și rezistența hardware-ului în condiții nefavorabile
+• Specificațiile de proiectare a documentelor, procedurile de încercare și rapoartele tehnice pentru sprijinirea procesului de tranziție a producției și de asigurare a calității
+
+Intern de inginerie hardware
+Quantum Innovations Lab, Palo Alto, CA
+Mai 2023 - august 2023
+
+• Asistat în dezvoltarea de prototipuri de sisteme integrate folosind Arduino și microcontrolere personalizate pentru demonstrațiile de dovadă de concepție
+• Analiza de închidere a calendarului pentru proiectele FPGA utilizând instrumente Xilinx, rezolvarea încălcărilor critice ale traseului pentru a îndeplini cerințele de ceas de 100 MHz
+• Montare electronica si testare placi prototip, probleme hardware de depanare si implementare modificari de proiectare
+• Model utilizatSim pentru simularea VHDL și verificarea desenelor logice digitale, identificarea și documentarea bug-urilor prin procese sistematice de urmărire
+• Eforturi susținute de analiză a datelor pentru evaluarea indicatorilor de performanță ai produsului și informarea deciziilor de optimizare a proiectării
+
+CARACTERISTICI TEHNICE
+
+Proiectare hardware: Proiectare placa de circuite imprimate, Dezvoltare FPGA, Microcontrolere, Arduino, Adunare electronica, Închidere temporizare
+HDL & Verificare: SystemVerilog, VHDL, Metodologia Universală de Verificare, Verificarea Proiectării, ModelSim, Injecție cu defect
+Unelte și platforme: Xilinx, Instrumente de proiectare asistate de calculator, Sisteme de urmărire a gândacilor
+Programare: Python, Firmware Development
+Protocoale și interfețe: Comunicare serială asincronă, Internetul obiectelor
+Practici inginerești: Inginerie de proiectare, Proiectare de produse, Testare, Analiză de date, Inginerie de sistem bazată pe modele
+
+PROIECTE
+
+Smart Home Automation System? Proiect personal
+• Proiectat și implementat un sistem de automatizare acasă bazat pe IoT folosind microcontrolere Arduino și proiectare PCB personalizate
+• Software de control Python dezvoltat cu comunicare serială asincronă pentru coordonarea dispozitivelor
+• Senzori multipli integrați și acționari pentru a crea un prototip funcțional care să demonstreze capacități de monitorizare la distanță
+
+Procesor de semnale digitale bazat pe FPGA
+• Implementat un filtru digital personalizat pe Xilinx FPGA folosind VHDL, realizând procesarea în timp real a semnalelor audio
+• Verificarea completă efectuată prin utilizarea sistemelor de testareVerilog și închiderea la 125 MHz a temporizării
+• Fluxul de proiectare complet documentat din specificație prin sinteză și validare hardware
+
+ACTIVITĂȚI ȘI CERTIFICARE
+
+Membru, Sucursala Studenților din Institutul Inginerilor Electrici și Electronici (IEEE)
+Participant, Hardware Hackathon 2024 - Echipa Finalistă
+Certified: Introducere în proiectarea sistemelor integrate (Curs online)

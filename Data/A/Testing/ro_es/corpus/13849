@@ -1,0 +1,66 @@
+Carlos Mendoza
+cmendoza.engineer@gmail.com | +51 987 654 321 | Calle Los Pinos 247, Lima 15047 | https://github.com/cmendoza-dev
+
+EXPERIENȚA DE LUCRU
+
+Inginer software EDA
+Sinergistic Design Systems, San Jose, California
+ianuarie 2022 - prezent
+
+- Algoritmi de bază dezvoltați și optimizați pentru instrumente de automatizare a designului fizic, îmbunătățirea performanței de funcționare cu 35% prin tehnici avansate de optimizare C++ și strategii multifilare
+- Motoare integrate de analiză statică a calendarului care utilizează structuri sofisticate de date și algoritmi grafici pentru a gestiona proiectele cu peste 10 milioane de cazuri
+- Colaborat cu echipe trans-funcționale pentru integrarea capacităților Verilog de parsare în rețeaua de instrumente EDA, permițând susținerea construcțiilor avansate RTL și reducerea timpului de iterație de proiectare cu 20%
+- Menținerea și îmbunătățirea bazei de coduri moștenite folosind controlul versiunii Perforce, asigurând compatibilitatea înapoi în timp ce introduce modele moderne de proiectare
+- Analiza performanțelor efectuate și profilul algoritmilor critici, identificarea și rezolvarea blocajelor în cazul motoarelor de plasare și de rutare
+
+Inginer software II
+Nexus Technology Solutions, Mountain View, California
+Iunie 2019 - decembrie 2021
+
+- Proiectate și implementate cadre de automatizare Python-based pentru testarea regresiei instrumentelor EDA, reducând efortul manual de testare cu 60%
+- Biblioteci C++ dezvoltate pentru algoritmi geometrici utilizați în aplicații de verificare a aspectului și de verificare a regulilor de proiectare
+- Capacități îmbunătățite de depanare a instrumentelor de sinteză prin implementarea unor mecanisme avansate de urmărire și a unor caracteristici de raportare a diagnosticului
+- Contribuția la dezvoltarea capacităților de prelucrare paralele care utilizează mai multe file pentru a accelera prelucrarea pe netlist pentru proiecte la scară largă
+- Participat la recenzii de coduri și ingineri juniori mentorați la cele mai bune practici de programare orientate spre obiecte și modele de proiectare
+
+Junior Dezvoltator de software
+Catalizator Innovations, Sunnyvale, California
+august 2017 - mai 2019
+
+- Scripturi de utilitate implementate în Perl și Python pentru extragerea și transformarea datelor din realizările EDA
+- Asistat în dezvoltarea infrastructurii bazate pe baze de date utilizând MySQL pentru stocarea și interogarea metadatelor de proiectare
+- Analize de depanare și cauze profunde ale defectelor software raportate de clienți și de echipele interne QA
+- Menținerea sistemelor de construire și implementare pe platformele Linux, asigurând eliberarea consecventă a instrumentelor în mai multe versiuni
+- Cazuri de testare dezvoltate și suite de validare pentru noi caracteristici în algoritmii de plasare și rutare
+
+EDUCAȚIE
+
+Maestru al științei în informatică
+Universitatea Catolică Pontificală din Peru, Lima
+Absolvent: mai 2017
+
+Burlac de Știință în Inginerie Electrică și Calculatoare
+Universitatea Națională de Inginerie, Lima
+Absolvent: mai 2015
+
+CARACTERISTICI TEHNICE
+
+Limbi de programare: C++, C, Python, Perl, Verilog, Adunarea Language
+Unelte și tehnologii: Git, Perforce, Linux, MongoDB, MySQL, IBM Mainframe
+Competențe de bază: Algoritmi, Structuri de date, Programare orientată pe obiecte, Modele de proiectare, Multifilare, Analiză de performanță, Depanare
+Domain Knowledge: EDA Software Development, Fizic Design Automation, Static Timing Analysis, RTL Design
+
+PROIECTE
+
+Biblioteca personalizată de grafică Algoritm
+- Dezvoltat o bibliotecă C++ de înaltă performanță pentru algoritmii de grafic traversal și de analiză uzuali în aplicațiile EDA
+- Structuri de date optimizate puse în aplicare care ating o reducere de 40% a memoriei comparativ cu implementarea standard
+
+Contribuții la instrumente EDA cu sursă deschisă
+- Contribuitor activ la proiectele EDA open-source, concentrându-se pe algoritmii de parsare si optimizare netlist
+- Plasturii prezentați pentru îmbunătățirea performanței și soluții de eroare adoptate de comunitate
+
+INFORMAȚII SUPLIMENTARE
+
+- Document de cercetare publicat pe tema "Algoritmi eficiente pentru optimizarea designului fizic la scară largă" la conferința de automatizare a designului
+- Membru al Grupului de interes special IEEE și ACM privind automatizarea proiectării
