@@ -10,7 +10,7 @@ export default function RankingTable({ items, jobId, filename }: { items: any[],
   const [jobTitle, setJobTitle] = useState<string>(filename || 'Job Description')
 
   useEffect(() => {
-
+    // fetch job full text to extract title (first line)
     let mounted = true
     const fetch = async () => {
       if (jobId) {

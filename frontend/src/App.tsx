@@ -56,19 +56,19 @@ export default function App() {
     el.addEventListener('touchstart', onTouchStart as EventListener, { passive: false })
     el.addEventListener('touchmove', onTouchMove as EventListener, { passive: false })
 
-
+    // Manage overflow: hide scrollbar when content fits, enable when content needs it
     const updateOverflow = () => {
       if (!el) return
-
+      // Use a buffer to avoid showing the scrollbar for tiny rounding differences
       const BUFFER = 12
       const needsScroll = el.scrollHeight > el.clientHeight + BUFFER
       const rootEl = document.getElementById('root') as HTMLElement | null
 
-
+      // Only enable the internal scrollbar when the app explicitly allows scrolling
       if (needsScroll && allowScrollRef.current) {
         el.style.overflowY = 'auto'
         el.classList.add('show-scrollbar')
-
+        // release initial page-level lock if present
         if ((window as any).__releaseInitialScrollLock) {
           try { (window as any).__releaseInitialScrollLock() } catch (e) {}
         } else {
@@ -92,7 +92,7 @@ export default function App() {
       }
     }
 
-
+    // Initial checks at multiple ticks to account for font/layout shifts
     requestAnimationFrame(updateOverflow)
     const t1 = window.setTimeout(updateOverflow, 50)
     const t2 = window.setTimeout(updateOverflow, 250)
@@ -100,10 +100,10 @@ export default function App() {
     const t4 = window.setTimeout(updateOverflow, 1600)
     const t5 = window.setTimeout(updateOverflow, 3000)
 
+    // No automatic removal of the initial style here — it will be removed only when
+    // `updateOverflow` detects content actually needs scrolling.
 
-
-
-
+    // Observe size/content changes
     let ro: ResizeObserver | null = null
     if ((window as any).ResizeObserver) {
       ro = new (window as any).ResizeObserver(() => requestAnimationFrame(updateOverflow))
@@ -114,9 +114,9 @@ export default function App() {
     mo.observe(el, { childList: true, subtree: true, characterData: true })
     window.addEventListener('resize', updateOverflow)
 
-
+    // Listen for explicit app event signalling rankings exist — only then release initial lock and allow scrollbar
     const onRankingsAvailable = (ev: Event) => {
-
+      // Allow internal scrolling from now on
       allowScrollRef.current = true
       try {
         if ((window as any).__releaseInitialScrollLock) {

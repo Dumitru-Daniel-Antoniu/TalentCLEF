@@ -28,7 +28,7 @@ export default function JobUploadZone({ onUploaded, onUploadStarted }: { onUploa
     const files = inputEl.files ? Array.from(inputEl.files) : []
     if (files.length === 0) return
     onUploadStarted?.()
-
+    // clear the input immediately to avoid issues with React pooled events
     inputEl.value = ''
     try {
       console.log('JobUploadZone.onFiles files', files)

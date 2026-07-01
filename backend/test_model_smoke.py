@@ -1,7 +1,6 @@
-
-
-
-
+"""Simple smoke test that imports the backend embeddings loader
+and computes a single embedding to verify model availability.
+"""
 import logging
 import sys
 
@@ -12,7 +11,6 @@ try:
     import os
     import sys
     import numpy as np
-
 
     sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 

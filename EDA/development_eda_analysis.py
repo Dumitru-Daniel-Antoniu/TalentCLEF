@@ -40,7 +40,6 @@ MALE_ASSOCIATED_NAMES = {
 
 
 def find_development_root(extract_dir: Path) -> Path:
-
     candidates = [extract_dir] + [p for p in extract_dir.rglob("*") if p.is_dir()]
     for candidate in candidates:
         if (
@@ -55,7 +54,6 @@ def find_development_root(extract_dir: Path) -> Path:
 
 
 def clean_job_title(text: str) -> str:
-
     first_line = next(
         (line.strip() for line in text.splitlines() if line.strip()),
         "Unknown job",
@@ -105,7 +103,6 @@ def normalize_heading(line: str) -> str:
 
 
 def extract_section(text: str, possible_starts: set[str]) -> str:
-
     lines = text.splitlines()
     start_index = None
 
@@ -180,13 +177,6 @@ def count_professional_positions(text: str) -> int:
 
 
 def binary_name_category(full_name: str) -> str:
-
-
-
-
-
-
-
     first_name = re.split(r"[\s-]+", full_name.strip())[0]
 
     if first_name in FEMALE_ASSOCIATED_NAMES:
@@ -216,7 +206,6 @@ def main() -> None:
     root = find_development_root(EXTRACT_DIR)
     en_root = root / "en"
     OUTPUT_DIR.mkdir(exist_ok=True)
-
 
     qrels = pd.read_csv(
         en_root / "qrels.tsv",

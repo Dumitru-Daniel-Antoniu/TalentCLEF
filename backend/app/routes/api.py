@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 @router.delete("/uploads/{upload_type}")
 async def clear_uploads(upload_type: str):
-
     if upload_type == "resumes":
         storage.clear_resumes()
     elif upload_type == "jobs":
@@ -29,7 +28,6 @@ async def clear_uploads(upload_type: str):
 
 @router.post("/upload-resumes", response_model=List[UploadResponse])
 async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[str] = Form(None)):
-
     upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
     upload_dir.mkdir(parents=True, exist_ok=True)
 
@@ -60,7 +58,6 @@ async def upload_resumes(files: List[UploadFile] = File(...), job_id: Optional[s
 
 @router.get("/resumes")
 async def list_resumes(job_id: Optional[str] = None):
-
     try:
         if job_id:
             return storage.list_resumes_for_job(job_id)
@@ -72,7 +69,6 @@ async def list_resumes(job_id: Optional[str] = None):
 
 @router.post("/job-description-file")
 async def job_description_file(file: UploadFile = File(...)):
-
     upload_dir = Path(os.environ.get("UPLOAD_DIR", "uploads"))
     upload_dir.mkdir(parents=True, exist_ok=True)
 
@@ -107,7 +103,6 @@ async def job_description_file(file: UploadFile = File(...)):
 
 @router.post("/job-description")
 async def job_description(payload: JobCreate):
-
     text = clean_text(payload.text)
     emb = get_embedding(text)
     job_id = uuid4().hex
@@ -117,7 +112,6 @@ async def job_description(payload: JobCreate):
 
 @router.get("/job/{job_id}")
 async def get_job(job_id: str):
-
     try:
         job = storage.get_job(job_id)
         if not job:
@@ -132,7 +126,6 @@ async def get_job(job_id: str):
 
 @router.get("/resume/{resume_id}")
 async def get_resume(resume_id: str):
-
     try:
         r = storage.get_resume(resume_id)
         if not r:
@@ -147,8 +140,6 @@ async def get_resume(resume_id: str):
 
 @router.post("/rank")
 async def rank(payload: RankRequest):
-
-
     if payload.job_text:
         job_text = clean_text(payload.job_text)
         job_emb = get_embedding(job_text)
@@ -159,7 +150,6 @@ async def rank(payload: RankRequest):
         job_emb = job["embedding"]
     else:
         raise HTTPException(status_code=400, detail="Provide job_text or job_id")
-
 
     resumes = []
     if payload.resume_ids:
@@ -177,13 +167,11 @@ async def rank(payload: RankRequest):
     names = [r["filename"] for r in resumes]
     ids = [r["id"] for r in resumes]
 
-
     try:
         embs = embed_texts(texts)
     except Exception as e:
         logger.exception("Embedding error: %s", e)
         raise HTTPException(status_code=500, detail=str(e))
-
 
     try:
         import numpy as np
@@ -209,7 +197,6 @@ async def rank(payload: RankRequest):
             "summary": summary,
         })
 
-
     results = sorted(results, key=lambda r: r["score"], reverse=True)
 
     top_k = payload.top_k or len(results)
@@ -219,7 +206,6 @@ async def rank(payload: RankRequest):
 
 @router.get("/model")
 async def model_status():
-
     try:
         info = get_model_info()
         return info

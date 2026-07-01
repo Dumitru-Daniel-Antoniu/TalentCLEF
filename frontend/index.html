@@ -2,11 +2,11 @@
 <html>
   <head>
     <style id="initial-scroll-style">
-
+      /* Strong initial lock: hide any scrollbars and prevent scrolling at first paint */
       html, body, #root { overflow: hidden !important; height: 100%; margin: 0; scrollbar-width: none !important; -ms-overflow-style: none !important; }
       html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
     </style>
-
+    <!-- Initial no-scroll lock is applied directly to #root to prevent any scrollbar before React mounts -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ResumeRank</title>
@@ -14,7 +14,7 @@
   <body>
     <div id="root"></div>
     <script>
-
+      // Strong persistent initial scroll lock: inserts a head style and prevents scroll events.
       (function(){
         const STYLE_ID = 'initial-scroll-style'
         const CSS = "html, body, #root { overflow: hidden !important; height: 100%; margin: 0; } html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }"
@@ -33,18 +33,18 @@
         function wheelHandler(e){ e.preventDefault(); }
         function touchHandler(e){ e.preventDefault(); }
         function keyHandler(e){
-
+          // prevent keys that can scroll the page
           var keys = ['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' ']
           try { if (keys.indexOf(e.key) !== -1) e.preventDefault(); } catch (er) {}
         }
 
-
+        // Install persistent style and capturing listeners asap
         ensureStyle()
         try {
           window.addEventListener('keydown', keyHandler, { passive: false, capture: true })
         } catch (e) {}
 
-
+        // Create a full-viewport transparent overlay that intercepts wheel/touch events
         function ensureOverlay(){
           var o = document.getElementById('initial-scroll-overlay')
           if (!o) {
@@ -67,14 +67,14 @@
 
         var overlay = ensureOverlay()
         try {
-
+          // allow pointer events so clicks and inputs work through the overlay
           if (overlay) overlay.style.pointerEvents = 'none'
-
+          // intercept scroll/touch at the window level in capture phase to prevent scrolling
           window.addEventListener('wheel', wheelHandler, { passive: false, capture: true })
           window.addEventListener('touchmove', touchHandler, { passive: false, capture: true })
         } catch (e) {}
 
-
+        // Compute scrollbar gutter and nudge root so the gutter is not visible on platforms that force scrollbar visibility
         try {
           var rootEl = document.getElementById('root')
           var sw = window.innerWidth - document.documentElement.clientWidth
@@ -84,7 +84,7 @@
           }
         } catch (e) {}
 
-
+        // Observe head so if something removes the style we re-insert it until released
         window.__initialScrollLockActive = true
         var headObserver = new MutationObserver(function(){ if (window.__initialScrollLockActive) ensureStyle() })
         try { headObserver.observe(document.head || document.documentElement, { childList: true, subtree: false }) } catch (e) {}

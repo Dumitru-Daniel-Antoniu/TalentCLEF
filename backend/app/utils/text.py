@@ -11,11 +11,6 @@ def clean_text(text: str) -> str:
 
 
 def extract_skills(text: str):
-
-
-
-
-
     if not text:
         return set()
 
@@ -28,7 +23,6 @@ def extract_skills(text: str):
     if m:
         block = m.group(1)
     else:
-
         lines = text.splitlines()
         for i, line in enumerate(lines):
             if re.search(r"(?i)^\s*(skills|required skills|habilidades|competencias)\b", line):
@@ -36,7 +30,6 @@ def extract_skills(text: str):
                 break
 
     if not block:
-
         tokens = set()
         for token in re.split(r"[\n,•\-\t]+", text[:2000]):
             s = token.strip().lower()

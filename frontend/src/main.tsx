@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-
-
+// Ensure an initial scroll lock is present from the app bundle as a fallback
+// (useful during dev where index.html may not be applied quickly).
 (function ensureInitialScrollLock(){
   try {
     var STYLE_ID = 'initial-scroll-style'
@@ -26,17 +26,17 @@ import './index.css'
       ov.style.bottom = '0'
       ov.style.zIndex = '2147483647'
       ov.style.background = 'transparent'
-
+      // allow pointer events so the UI remains interactive
       ov.style.pointerEvents = 'none'
       var wheelHandler = function(e:any){ try{ e.preventDefault() }catch(err){} }
       var touchHandler = function(e:any){ try{ e.preventDefault() }catch(err){} }
       var keyHandler = function(e:any){ try{ var keys=['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' ']; if (keys.indexOf(e.key)!==-1) e.preventDefault() }catch(err){} }
-
+      // expose handlers so they can be removed later
       try { (window as any).__initialWheelHandler = wheelHandler } catch(e) {}
       try { (window as any).__initialTouchHandler = touchHandler } catch(e) {}
       try { (window as any).__initialKeyHandler = keyHandler } catch(e) {}
       try {
-
+        // intercept scroll/touch at window-level so pointer events still reach the app
         window.addEventListener('wheel', wheelHandler, { passive: false, capture: true })
         window.addEventListener('touchmove', touchHandler, { passive: false, capture: true })
         window.addEventListener('keydown', keyHandler, { passive: false, capture: true })
@@ -44,7 +44,7 @@ import './index.css'
       } catch(e) {}
     }
 
-
+    // Preserve any previously-installed release function (e.g., from index.html) and call it first
     const _prevRelease = (window as any).__releaseInitialScrollLock
     ;(window as any).__releaseInitialScrollLock = function(){
       try {

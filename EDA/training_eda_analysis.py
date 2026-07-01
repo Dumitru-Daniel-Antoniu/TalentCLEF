@@ -49,7 +49,6 @@ def normalize_heading(line: str) -> str:
 
 
 def extract_section(text: str, possible_starts: set[str]) -> str:
-
     lines = str(text).splitlines()
     start_index = None
 
@@ -145,9 +144,6 @@ def main() -> None:
             f"{sorted(missing_columns)}"
         )
 
-
-
-
     top_jobs = data["Job Roles"].value_counts().head(10).sort_values()
 
     plt.figure(figsize=(10, 6))
@@ -169,9 +165,6 @@ def main() -> None:
     jobs_figure = OUTPUT_DIR / "training_top_10_job_roles.png"
     plt.savefig(jobs_figure, dpi=300, bbox_inches="tight")
     plt.close()
-
-
-
 
     gender_counts = (
         data["Gender"]
@@ -199,9 +192,6 @@ def main() -> None:
     gender_figure = OUTPUT_DIR / "training_gender_distribution.png"
     plt.savefig(gender_figure, dpi=300, bbox_inches="tight")
     plt.close()
-
-
-
 
     education = data["Resume"].map(highest_education_level)
     positions = data["Resume"].map(count_professional_positions)
